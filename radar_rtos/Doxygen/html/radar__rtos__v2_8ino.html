@@ -1,0 +1,692 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.9.4"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Radar Arduino: Referência do Arquivo radar_rtos_v2.ino</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Radar Arduino
+   </div>
+   <div id="projectbrief">O projeto consiste em um radar com base giratória utilizando servomotor e sensor ultrassônico de distância, potenciômetro para controle de velocidade, botão de acionamento do sistema e leds indicadores.</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Gerado por Doxygen 1.9.4 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search",'Busca','.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Busca');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<iframe src="javascript:void(0)" frameborder="0" 
+        name="MSearchResults" id="MSearchResults">
+</iframe>
+</div>
+
+</div><!-- top -->
+<div class="header">
+  <div class="summary">
+<a href="#define-members">Definições e Macros</a> &#124;
+<a href="#enum-members">Enumerações</a> &#124;
+<a href="#func-members">Funções</a> &#124;
+<a href="#var-members">Variáveis</a>  </div>
+  <div class="headertitle"><div class="title">Referência do Arquivo radar_rtos_v2.ino</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p>radar com sensor de distancia ultrassonico usando arduino  
+<a href="#details">Mais...</a></p>
+<div class="textblock"><code>#include &quot;Arduino_FreeRTOS.h&quot;</code><br />
+<code>#include &quot;task.h&quot;</code><br />
+<code>#include &quot;semphr.h&quot;</code><br />
+<code>#include &lt;math.h&gt;</code><br />
+<code>#include &lt;Ultrasonic.h&gt;</code><br />
+<code>#include &lt;Servo.h&gt;</code><br />
+</div><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="define-members" name="define-members"></a>
+Definições e Macros</h2></td></tr>
+<tr class="memitem:a2584c084a250794a8cb0e2c34f127967"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a2584c084a250794a8cb0e2c34f127967">ULTR_TRIGGER</a>&#160;&#160;&#160;4</td></tr>
+<tr class="separator:a2584c084a250794a8cb0e2c34f127967"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10ca9be41b091b163192c430671a7248"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a10ca9be41b091b163192c430671a7248">ULTR_ECHO</a>&#160;&#160;&#160;5</td></tr>
+<tr class="separator:a10ca9be41b091b163192c430671a7248"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5bea3c74d457041f50bf7c9f59500c2"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#aa5bea3c74d457041f50bf7c9f59500c2">ENGINE_PWM</a>&#160;&#160;&#160;9</td></tr>
+<tr class="separator:aa5bea3c74d457041f50bf7c9f59500c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:affbe97dd7cba62a79a0d6b5b80664469"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#affbe97dd7cba62a79a0d6b5b80664469">INIT_ANGLE</a>&#160;&#160;&#160;0</td></tr>
+<tr class="separator:affbe97dd7cba62a79a0d6b5b80664469"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4e7ee8045dd9789b30829db6b9b1f6f"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#ae4e7ee8045dd9789b30829db6b9b1f6f">END_ANGLE</a>&#160;&#160;&#160;180</td></tr>
+<tr class="separator:ae4e7ee8045dd9789b30829db6b9b1f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c1ef69c04a4b72bd30e3761102ecea9"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a6c1ef69c04a4b72bd30e3761102ecea9">PIN_POTEN</a>&#160;&#160;&#160;A0</td></tr>
+<tr class="separator:a6c1ef69c04a4b72bd30e3761102ecea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a064af7b2e733862c958d296e7f638c16"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a064af7b2e733862c958d296e7f638c16">BUTTON</a>&#160;&#160;&#160;2</td></tr>
+<tr class="separator:a064af7b2e733862c958d296e7f638c16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af2e697ac60e05813d45ea2c9c9e79c25"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#af2e697ac60e05813d45ea2c9c9e79c25">LED_ON</a>&#160;&#160;&#160;12</td></tr>
+<tr class="separator:af2e697ac60e05813d45ea2c9c9e79c25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b1ace5a18ef264ffb94cdae5a8e82df"><td class="memItemLeft" align="right" valign="top">#define&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a3b1ace5a18ef264ffb94cdae5a8e82df">LED_RUNNING</a>&#160;&#160;&#160;11</td></tr>
+<tr class="separator:a3b1ace5a18ef264ffb94cdae5a8e82df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="enum-members" name="enum-members"></a>
+Enumerações</h2></td></tr>
+<tr class="memitem:a808e5cd4979462d3bbe3070d7d147444"><td class="memItemLeft" align="right" valign="top">enum &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444">States</a> { <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e">STATE_ZERO</a> = 0
+, <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444a19f1c5e179421b5424826610baa2faea">STATE_ONE</a>
+ }</td></tr>
+<tr class="separator:a808e5cd4979462d3bbe3070d7d147444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funções</h2></td></tr>
+<tr class="memitem:ac9783626cbcedd31bcf90a1d5f4754e5"><td class="memItemLeft" align="right" valign="top">Ultrasonic&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#ac9783626cbcedd31bcf90a1d5f4754e5">ultrasonic</a> (<a class="el" href="radar__rtos__v2_8ino.html#a2584c084a250794a8cb0e2c34f127967">ULTR_TRIGGER</a>, <a class="el" href="radar__rtos__v2_8ino.html#a10ca9be41b091b163192c430671a7248">ULTR_ECHO</a>)</td></tr>
+<tr class="memdesc:ac9783626cbcedd31bcf90a1d5f4754e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para o semaforo do log.  <a href="radar__rtos__v2_8ino.html#ac9783626cbcedd31bcf90a1d5f4754e5">Mais...</a><br /></td></tr>
+<tr class="separator:ac9783626cbcedd31bcf90a1d5f4754e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fc01d736fe50cf5b977f755b675f11d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a4fc01d736fe50cf5b977f755b675f11d">setup</a> ()</td></tr>
+<tr class="memdesc:a4fc01d736fe50cf5b977f755b675f11d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instancia o sensor como um objeto linkando as portas designadas a ele.  <a href="radar__rtos__v2_8ino.html#a4fc01d736fe50cf5b977f755b675f11d">Mais...</a><br /></td></tr>
+<tr class="separator:a4fc01d736fe50cf5b977f755b675f11d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe461d27b9c48d5921c00d521181f12f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#afe461d27b9c48d5921c00d521181f12f">loop</a> ()</td></tr>
+<tr class="memdesc:afe461d27b9c48d5921c00d521181f12f"><td class="mdescLeft">&#160;</td><td class="mdescRight">funcao de loop do arduino  <a href="radar__rtos__v2_8ino.html#afe461d27b9c48d5921c00d521181f12f">Mais...</a><br /></td></tr>
+<tr class="separator:afe461d27b9c48d5921c00d521181f12f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6da916ef3a8247d416b52001d76c641e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a6da916ef3a8247d416b52001d76c641e">readSensorTask</a> (void *arg)</td></tr>
+<tr class="memdesc:a6da916ef3a8247d416b52001d76c641e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Leitura sensor Ultrassonico.  <a href="radar__rtos__v2_8ino.html#a6da916ef3a8247d416b52001d76c641e">Mais...</a><br /></td></tr>
+<tr class="separator:a6da916ef3a8247d416b52001d76c641e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a275f98ed177d02da1515ff6eeba64f2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a275f98ed177d02da1515ff6eeba64f2c">servoTask</a> (void *arg)</td></tr>
+<tr class="memdesc:a275f98ed177d02da1515ff6eeba64f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Controle do motor servo motor.  <a href="radar__rtos__v2_8ino.html#a275f98ed177d02da1515ff6eeba64f2c">Mais...</a><br /></td></tr>
+<tr class="separator:a275f98ed177d02da1515ff6eeba64f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad95ee40c746aeced0d27b0b67c1cb1f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#ad95ee40c746aeced0d27b0b67c1cb1f7">buttonTask</a> (void *arg)</td></tr>
+<tr class="memdesc:ad95ee40c746aeced0d27b0b67c1cb1f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Faz a leitura e controle do sistema atraves do botão.  <a href="radar__rtos__v2_8ino.html#ad95ee40c746aeced0d27b0b67c1cb1f7">Mais...</a><br /></td></tr>
+<tr class="separator:ad95ee40c746aeced0d27b0b67c1cb1f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a705a4ca2d322ceaf187d71e27b4c50e6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a705a4ca2d322ceaf187d71e27b4c50e6">logTask</a> (void *arg)</td></tr>
+<tr class="memdesc:a705a4ca2d322ceaf187d71e27b4c50e6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Faz o print dos dados de indice da captura e das distancias maximas e minimas para a porta serial.  <a href="radar__rtos__v2_8ino.html#a705a4ca2d322ceaf187d71e27b4c50e6">Mais...</a><br /></td></tr>
+<tr class="separator:a705a4ca2d322ceaf187d71e27b4c50e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variáveis</h2></td></tr>
+<tr class="memitem:a876fafd66726d49b93b389af89ff69a6"><td class="memItemLeft" align="right" valign="top">enum <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444">States</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a876fafd66726d49b93b389af89ff69a6">state</a> = <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e">STATE_ZERO</a></td></tr>
+<tr class="memdesc:a876fafd66726d49b93b389af89ff69a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Estados possiveis, zero = nao operante ; um = operando.  <a href="radar__rtos__v2_8ino.html#a876fafd66726d49b93b389af89ff69a6">Mais...</a><br /></td></tr>
+<tr class="separator:a876fafd66726d49b93b389af89ff69a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7c10027ca174fc9d529796f04aca6bd4"><td class="memItemLeft" align="right" valign="top">volatile bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a7c10027ca174fc9d529796f04aca6bd4">running</a> = false</td></tr>
+<tr class="memdesc:a7c10027ca174fc9d529796f04aca6bd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Inicia variavel de estado no estado zero.  <a href="radar__rtos__v2_8ino.html#a7c10027ca174fc9d529796f04aca6bd4">Mais...</a><br /></td></tr>
+<tr class="separator:a7c10027ca174fc9d529796f04aca6bd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b90e5a2a190b37adc24e1c4d3735dfd"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a1b90e5a2a190b37adc24e1c4d3735dfd">max_dist</a> = 0</td></tr>
+<tr class="memdesc:a1b90e5a2a190b37adc24e1c4d3735dfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Variavel que indica se esta rodando a leitura das distancias.  <a href="radar__rtos__v2_8ino.html#a1b90e5a2a190b37adc24e1c4d3735dfd">Mais...</a><br /></td></tr>
+<tr class="separator:a1b90e5a2a190b37adc24e1c4d3735dfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae88915a7b21585e1f5cb9a81ba10a421"><td class="memItemLeft" align="right" valign="top">volatile int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#ae88915a7b21585e1f5cb9a81ba10a421">min_dist</a> = 999</td></tr>
+<tr class="memdesc:ae88915a7b21585e1f5cb9a81ba10a421"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instancia variavel para distancia maxima com valor baixo.  <a href="radar__rtos__v2_8ino.html#ae88915a7b21585e1f5cb9a81ba10a421">Mais...</a><br /></td></tr>
+<tr class="separator:ae88915a7b21585e1f5cb9a81ba10a421"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abc7cde78dc2d9c4043f1113b94046911"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#abc7cde78dc2d9c4043f1113b94046911">readSensorTaskH</a></td></tr>
+<tr class="memdesc:abc7cde78dc2d9c4043f1113b94046911"><td class="mdescLeft">&#160;</td><td class="mdescRight">INstancia variavel para distancia minima com valor alto.  <a href="radar__rtos__v2_8ino.html#abc7cde78dc2d9c4043f1113b94046911">Mais...</a><br /></td></tr>
+<tr class="separator:abc7cde78dc2d9c4043f1113b94046911"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7db70f05fdf806c1a0263090d14bcabd"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a7db70f05fdf806c1a0263090d14bcabd">servoTaskH</a></td></tr>
+<tr class="memdesc:a7db70f05fdf806c1a0263090d14bcabd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para a tarefa de ler o sensor.  <a href="radar__rtos__v2_8ino.html#a7db70f05fdf806c1a0263090d14bcabd">Mais...</a><br /></td></tr>
+<tr class="separator:a7db70f05fdf806c1a0263090d14bcabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2068cb430e02b3c11f6d8c476cbc8dd4"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a2068cb430e02b3c11f6d8c476cbc8dd4">buttonTaskH</a></td></tr>
+<tr class="memdesc:a2068cb430e02b3c11f6d8c476cbc8dd4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para a tarefa de controlar o motor.  <a href="radar__rtos__v2_8ino.html#a2068cb430e02b3c11f6d8c476cbc8dd4">Mais...</a><br /></td></tr>
+<tr class="separator:a2068cb430e02b3c11f6d8c476cbc8dd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a947a37094218749b933ac1992bd9e7c7"><td class="memItemLeft" align="right" valign="top">TaskHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a947a37094218749b933ac1992bd9e7c7">logTaskH</a></td></tr>
+<tr class="memdesc:a947a37094218749b933ac1992bd9e7c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para a tarefa de ler o botao.  <a href="radar__rtos__v2_8ino.html#a947a37094218749b933ac1992bd9e7c7">Mais...</a><br /></td></tr>
+<tr class="separator:a947a37094218749b933ac1992bd9e7c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a2fd09cc4ccea76939f98e38bfc4de7"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#a8a2fd09cc4ccea76939f98e38bfc4de7">semServo</a></td></tr>
+<tr class="memdesc:a8a2fd09cc4ccea76939f98e38bfc4de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para a tarefa de criar o log das distancias.  <a href="radar__rtos__v2_8ino.html#a8a2fd09cc4ccea76939f98e38bfc4de7">Mais...</a><br /></td></tr>
+<tr class="separator:a8a2fd09cc4ccea76939f98e38bfc4de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af05cf61d6867d32027e304157a352337"><td class="memItemLeft" align="right" valign="top">SemaphoreHandle_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="radar__rtos__v2_8ino.html#af05cf61d6867d32027e304157a352337">semLog</a></td></tr>
+<tr class="memdesc:af05cf61d6867d32027e304157a352337"><td class="mdescLeft">&#160;</td><td class="mdescRight">Cria handler para o semaforo do motor.  <a href="radar__rtos__v2_8ino.html#af05cf61d6867d32027e304157a352337">Mais...</a><br /></td></tr>
+<tr class="separator:af05cf61d6867d32027e304157a352337"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Descrição detalhada</h2>
+<div class="textblock"><p >radar com sensor de distancia ultrassonico usando arduino </p>
+<dl class="section author"><dt>Autor</dt><dd>martim, michael (<a href="https://github.com/martimkun/radar_arduino">https://github.com/martimkun/radar_arduino</a>) </dd></dl>
+<dl class="section version"><dt>Versão</dt><dd>0.1 </dd></dl>
+<dl class="section date"><dt>Data</dt><dd>2022-08-04</dd></dl>
+<dl class="section copyright"><dt>Copyright</dt><dd>Copyright (c) 2022 </dd></dl>
+</div><h2 class="groupheader">Definições e macros</h2>
+<a id="a064af7b2e733862c958d296e7f638c16" name="a064af7b2e733862c958d296e7f638c16"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a064af7b2e733862c958d296e7f638c16">&#9670;&nbsp;</a></span>BUTTON</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define BUTTON&#160;&#160;&#160;2</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae4e7ee8045dd9789b30829db6b9b1f6f" name="ae4e7ee8045dd9789b30829db6b9b1f6f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae4e7ee8045dd9789b30829db6b9b1f6f">&#9670;&nbsp;</a></span>END_ANGLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define END_ANGLE&#160;&#160;&#160;180</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa5bea3c74d457041f50bf7c9f59500c2" name="aa5bea3c74d457041f50bf7c9f59500c2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa5bea3c74d457041f50bf7c9f59500c2">&#9670;&nbsp;</a></span>ENGINE_PWM</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ENGINE_PWM&#160;&#160;&#160;9</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="affbe97dd7cba62a79a0d6b5b80664469" name="affbe97dd7cba62a79a0d6b5b80664469"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#affbe97dd7cba62a79a0d6b5b80664469">&#9670;&nbsp;</a></span>INIT_ANGLE</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define INIT_ANGLE&#160;&#160;&#160;0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af2e697ac60e05813d45ea2c9c9e79c25" name="af2e697ac60e05813d45ea2c9c9e79c25"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af2e697ac60e05813d45ea2c9c9e79c25">&#9670;&nbsp;</a></span>LED_ON</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LED_ON&#160;&#160;&#160;12</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3b1ace5a18ef264ffb94cdae5a8e82df" name="a3b1ace5a18ef264ffb94cdae5a8e82df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3b1ace5a18ef264ffb94cdae5a8e82df">&#9670;&nbsp;</a></span>LED_RUNNING</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define LED_RUNNING&#160;&#160;&#160;11</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6c1ef69c04a4b72bd30e3761102ecea9" name="a6c1ef69c04a4b72bd30e3761102ecea9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6c1ef69c04a4b72bd30e3761102ecea9">&#9670;&nbsp;</a></span>PIN_POTEN</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define PIN_POTEN&#160;&#160;&#160;A0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a10ca9be41b091b163192c430671a7248" name="a10ca9be41b091b163192c430671a7248"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10ca9be41b091b163192c430671a7248">&#9670;&nbsp;</a></span>ULTR_ECHO</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ULTR_ECHO&#160;&#160;&#160;5</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2584c084a250794a8cb0e2c34f127967" name="a2584c084a250794a8cb0e2c34f127967"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2584c084a250794a8cb0e2c34f127967">&#9670;&nbsp;</a></span>ULTR_TRIGGER</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define ULTR_TRIGGER&#160;&#160;&#160;4</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Enumerações</h2>
+<a id="a808e5cd4979462d3bbe3070d7d147444" name="a808e5cd4979462d3bbe3070d7d147444"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a808e5cd4979462d3bbe3070d7d147444">&#9670;&nbsp;</a></span>States</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444">States</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<table class="fieldtable">
+<tr><th colspan="2">Enumeradores</th></tr><tr><td class="fieldname"><a id="a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e" name="a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e"></a>STATE_ZERO&#160;</td><td class="fielddoc"></td></tr>
+<tr><td class="fieldname"><a id="a808e5cd4979462d3bbe3070d7d147444a19f1c5e179421b5424826610baa2faea" name="a808e5cd4979462d3bbe3070d7d147444a19f1c5e179421b5424826610baa2faea"></a>STATE_ONE&#160;</td><td class="fielddoc"></td></tr>
+</table>
+
+</div>
+</div>
+<h2 class="groupheader">Funções</h2>
+<a id="ad95ee40c746aeced0d27b0b67c1cb1f7" name="ad95ee40c746aeced0d27b0b67c1cb1f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad95ee40c746aeced0d27b0b67c1cb1f7">&#9670;&nbsp;</a></span>buttonTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void buttonTask </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Faz a leitura e controle do sistema atraves do botão. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >Le estado atual do botao</p>
+<p >variavel que guarda o estado anterior do botao</p>
+<p >Led indicando que o sistema esta pronto para iniciar</p>
+<p >guarda o estado anterior do botao, le o estado atual, se atinge os criterios para ligar o radar, ele da o semaforo ao servo motor e inicia a leitura das distancias</p>
+
+</div>
+</div>
+<a id="a705a4ca2d322ceaf187d71e27b4c50e6" name="a705a4ca2d322ceaf187d71e27b4c50e6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a705a4ca2d322ceaf187d71e27b4c50e6">&#9670;&nbsp;</a></span>logTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void logTask </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Faz o print dos dados de indice da captura e das distancias maximas e minimas para a porta serial. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >verifica se semaforo esta disponivel para si e printa as informacoes na porta serial, apos, reescreve os dados de distancia maxima e minima para a proxima execucao</p>
+
+</div>
+</div>
+<a id="afe461d27b9c48d5921c00d521181f12f" name="afe461d27b9c48d5921c00d521181f12f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afe461d27b9c48d5921c00d521181f12f">&#9670;&nbsp;</a></span>loop()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void loop </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>funcao de loop do arduino </p>
+<p >Nada é feito aqui, Todas as funções são feitas em Tasks e não no loop do arduino</p>
+
+</div>
+</div>
+<a id="a6da916ef3a8247d416b52001d76c641e" name="a6da916ef3a8247d416b52001d76c641e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6da916ef3a8247d416b52001d76c641e">&#9670;&nbsp;</a></span>readSensorTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void readSensorTask </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Leitura sensor Ultrassonico. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >Instancia variavel para medir a distancia</p>
+<p >testa se o estado = 1 e se for, faz a leitura do sensor e compara as distancias maximas e minimas, caso nao seja estado um, espera e verifica novamente</p>
+<p >Le o dado do sensor</p>
+<p >Deleta a Task atual</p>
+
+</div>
+</div>
+<a id="a275f98ed177d02da1515ff6eeba64f2c" name="a275f98ed177d02da1515ff6eeba64f2c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a275f98ed177d02da1515ff6eeba64f2c">&#9670;&nbsp;</a></span>servoTask()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void servoTask </td>
+          <td>(</td>
+          <td class="paramtype">void *&#160;</td>
+          <td class="paramname"><em>arg</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Controle do motor servo motor. </p>
+<dl class="params"><dt>Parâmetros</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">arg</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+<p >instancia a variavel de objeto do servo motor</p>
+<p >anexa o pino designado ao servo motor</p>
+<p >define a variavel para a companhar a posicao do motor</p>
+<p >redefine o valor de posicao para a inicial</p>
+<p >verifica se semaforo esta disponivel, se sim começa a rotacao do motor ate 180 graus e volta novamente</p>
+
+</div>
+</div>
+<a id="a4fc01d736fe50cf5b977f755b675f11d" name="a4fc01d736fe50cf5b977f755b675f11d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fc01d736fe50cf5b977f755b675f11d">&#9670;&nbsp;</a></span>setup()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void setup </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instancia o sensor como um objeto linkando as portas designadas a ele. </p>
+<p >funcao de setup do sistema, define variaveis e tarefas </p>
+<p >Inicializa Serial</p>
+<p >Setup inputs e outputs</p>
+<p >Garante que os leds estarão desligados</p>
+<p >Espera até a porta serial conectar</p>
+<p >Cria o semaforo para o servo motor</p>
+<p >Printa mensagem de erro ao criar semaforo do servo motor</p>
+<p >Cria o semaforo para o servo motor</p>
+<p >Printa mensagem de erro ao criar semaforo do log</p>
+<p >Cria tarefa readSensorTask</p>
+<p >Cria tarefa ledTask</p>
+<p >Cria tarefa buttonTask</p>
+<p >Cria tarefa logTask</p>
+
+</div>
+</div>
+<a id="ac9783626cbcedd31bcf90a1d5f4754e5" name="ac9783626cbcedd31bcf90a1d5f4754e5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac9783626cbcedd31bcf90a1d5f4754e5">&#9670;&nbsp;</a></span>ultrasonic()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Ultrasonic ultrasonic </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="radar__rtos__v2_8ino.html#a2584c084a250794a8cb0e2c34f127967">ULTR_TRIGGER</a>&#160;</td>
+          <td class="paramname">, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="radar__rtos__v2_8ino.html#a10ca9be41b091b163192c430671a7248">ULTR_ECHO</a>&#160;</td>
+          <td class="paramname">&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para o semaforo do log. </p>
+<p >Declaração sensor Ultrasônico </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variáveis</h2>
+<a id="a2068cb430e02b3c11f6d8c476cbc8dd4" name="a2068cb430e02b3c11f6d8c476cbc8dd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2068cb430e02b3c11f6d8c476cbc8dd4">&#9670;&nbsp;</a></span>buttonTaskH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t buttonTaskH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para a tarefa de controlar o motor. </p>
+
+</div>
+</div>
+<a id="a947a37094218749b933ac1992bd9e7c7" name="a947a37094218749b933ac1992bd9e7c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a947a37094218749b933ac1992bd9e7c7">&#9670;&nbsp;</a></span>logTaskH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t logTaskH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para a tarefa de ler o botao. </p>
+
+</div>
+</div>
+<a id="a1b90e5a2a190b37adc24e1c4d3735dfd" name="a1b90e5a2a190b37adc24e1c4d3735dfd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b90e5a2a190b37adc24e1c4d3735dfd">&#9670;&nbsp;</a></span>max_dist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int max_dist = 0</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Variavel que indica se esta rodando a leitura das distancias. </p>
+
+</div>
+</div>
+<a id="ae88915a7b21585e1f5cb9a81ba10a421" name="ae88915a7b21585e1f5cb9a81ba10a421"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae88915a7b21585e1f5cb9a81ba10a421">&#9670;&nbsp;</a></span>min_dist</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile int min_dist = 999</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Instancia variavel para distancia maxima com valor baixo. </p>
+
+</div>
+</div>
+<a id="abc7cde78dc2d9c4043f1113b94046911" name="abc7cde78dc2d9c4043f1113b94046911"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc7cde78dc2d9c4043f1113b94046911">&#9670;&nbsp;</a></span>readSensorTaskH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t readSensorTaskH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>INstancia variavel para distancia minima com valor alto. </p>
+<p >Tarefas </p>
+
+</div>
+</div>
+<a id="a7c10027ca174fc9d529796f04aca6bd4" name="a7c10027ca174fc9d529796f04aca6bd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7c10027ca174fc9d529796f04aca6bd4">&#9670;&nbsp;</a></span>running</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">volatile bool running = false</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Inicia variavel de estado no estado zero. </p>
+
+</div>
+</div>
+<a id="af05cf61d6867d32027e304157a352337" name="af05cf61d6867d32027e304157a352337"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af05cf61d6867d32027e304157a352337">&#9670;&nbsp;</a></span>semLog</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t semLog</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para o semaforo do motor. </p>
+
+</div>
+</div>
+<a id="a8a2fd09cc4ccea76939f98e38bfc4de7" name="a8a2fd09cc4ccea76939f98e38bfc4de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a2fd09cc4ccea76939f98e38bfc4de7">&#9670;&nbsp;</a></span>semServo</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">SemaphoreHandle_t semServo</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para a tarefa de criar o log das distancias. </p>
+<p >Semaforos </p>
+
+</div>
+</div>
+<a id="a7db70f05fdf806c1a0263090d14bcabd" name="a7db70f05fdf806c1a0263090d14bcabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7db70f05fdf806c1a0263090d14bcabd">&#9670;&nbsp;</a></span>servoTaskH</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">TaskHandle_t servoTaskH</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Cria handler para a tarefa de ler o sensor. </p>
+
+</div>
+</div>
+<a id="a876fafd66726d49b93b389af89ff69a6" name="a876fafd66726d49b93b389af89ff69a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a876fafd66726d49b93b389af89ff69a6">&#9670;&nbsp;</a></span>state</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">enum <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444">States</a> state = <a class="el" href="radar__rtos__v2_8ino.html#a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e">STATE_ZERO</a></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Estados possiveis, zero = nao operante ; um = operando. </p>
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Gerado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.4
+</small></address>
+</body>
+</html>

@@ -1,0 +1,412 @@
+\doxysection{Referência do Arquivo radar\+\_\+rtos\+\_\+v2.\+ino}
+\label{radar__rtos__v2_8ino}\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+
+
+radar com sensor de distancia ultrassonico usando arduino  
+
+
+{\ttfamily \#include \char`\"{}Arduino\+\_\+\+Free\+RTOS.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}task.\+h\char`\"{}}\newline
+{\ttfamily \#include \char`\"{}semphr.\+h\char`\"{}}\newline
+{\ttfamily \#include $<$math.\+h$>$}\newline
+{\ttfamily \#include $<$Ultrasonic.\+h$>$}\newline
+{\ttfamily \#include $<$Servo.\+h$>$}\newline
+\doxysubsection*{Definições e Macros}
+\begin{DoxyCompactItemize}
+\item 
+\#define \textbf{ ULTR\+\_\+\+TRIGGER}~4
+\item 
+\#define \textbf{ ULTR\+\_\+\+ECHO}~5
+\item 
+\#define \textbf{ ENGINE\+\_\+\+PWM}~9
+\item 
+\#define \textbf{ INIT\+\_\+\+ANGLE}~0
+\item 
+\#define \textbf{ END\+\_\+\+ANGLE}~180
+\item 
+\#define \textbf{ PIN\+\_\+\+POTEN}~A0
+\item 
+\#define \textbf{ BUTTON}~2
+\item 
+\#define \textbf{ LED\+\_\+\+ON}~12
+\item 
+\#define \textbf{ LED\+\_\+\+RUNNING}~11
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerações}
+\begin{DoxyCompactItemize}
+\item 
+enum \textbf{ States} \{ \textbf{ STATE\+\_\+\+ZERO} = 0
+, \textbf{ STATE\+\_\+\+ONE}
+ \}
+\end{DoxyCompactItemize}
+\doxysubsection*{Funções}
+\begin{DoxyCompactItemize}
+\item 
+Ultrasonic \textbf{ ultrasonic} (\textbf{ ULTR\+\_\+\+TRIGGER}, \textbf{ ULTR\+\_\+\+ECHO})
+\begin{DoxyCompactList}\small\item\em Cria handler para o semaforo do log. \end{DoxyCompactList}\item 
+void \textbf{ setup} ()
+\begin{DoxyCompactList}\small\item\em Instancia o sensor como um objeto linkando as portas designadas a ele. \end{DoxyCompactList}\item 
+void \textbf{ loop} ()
+\begin{DoxyCompactList}\small\item\em funcao de loop do arduino \end{DoxyCompactList}\item 
+void \textbf{ read\+Sensor\+Task} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Leitura sensor Ultrassonico. \end{DoxyCompactList}\item 
+void \textbf{ servo\+Task} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Controle do motor servo motor. \end{DoxyCompactList}\item 
+void \textbf{ button\+Task} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Faz a leitura e controle do sistema atraves do botão. \end{DoxyCompactList}\item 
+void \textbf{ log\+Task} (void $\ast$arg)
+\begin{DoxyCompactList}\small\item\em Faz o print dos dados de indice da captura e das distancias maximas e minimas para a porta serial. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Variáveis}
+\begin{DoxyCompactItemize}
+\item 
+enum \textbf{ States} \textbf{ state} = \textbf{ STATE\+\_\+\+ZERO}
+\begin{DoxyCompactList}\small\item\em Estados possiveis, zero = nao operante ; um = operando. \end{DoxyCompactList}\item 
+volatile bool \textbf{ running} = false
+\begin{DoxyCompactList}\small\item\em Inicia variavel de estado no estado zero. \end{DoxyCompactList}\item 
+volatile int \textbf{ max\+\_\+dist} = 0
+\begin{DoxyCompactList}\small\item\em Variavel que indica se esta rodando a leitura das distancias. \end{DoxyCompactList}\item 
+volatile int \textbf{ min\+\_\+dist} = 999
+\begin{DoxyCompactList}\small\item\em Instancia variavel para distancia maxima com valor baixo. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \textbf{ read\+Sensor\+TaskH}
+\begin{DoxyCompactList}\small\item\em INstancia variavel para distancia minima com valor alto. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \textbf{ servo\+TaskH}
+\begin{DoxyCompactList}\small\item\em Cria handler para a tarefa de ler o sensor. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \textbf{ button\+TaskH}
+\begin{DoxyCompactList}\small\item\em Cria handler para a tarefa de controlar o motor. \end{DoxyCompactList}\item 
+Task\+Handle\+\_\+t \textbf{ log\+TaskH}
+\begin{DoxyCompactList}\small\item\em Cria handler para a tarefa de ler o botao. \end{DoxyCompactList}\item 
+Semaphore\+Handle\+\_\+t \textbf{ sem\+Servo}
+\begin{DoxyCompactList}\small\item\em Cria handler para a tarefa de criar o log das distancias. \end{DoxyCompactList}\item 
+Semaphore\+Handle\+\_\+t \textbf{ sem\+Log}
+\begin{DoxyCompactList}\small\item\em Cria handler para o semaforo do motor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Descrição detalhada}
+radar com sensor de distancia ultrassonico usando arduino 
+
+\begin{DoxyAuthor}{Autor}
+martim, michael ({\texttt{ https\+://github.\+com/martimkun/radar\+\_\+arduino}}) 
+\end{DoxyAuthor}
+\begin{DoxyVersion}{Versão}
+0.\+1 
+\end{DoxyVersion}
+\begin{DoxyDate}{Data}
+2022-\/08-\/04
+\end{DoxyDate}
+\begin{DoxyCopyright}{Copyright}
+Copyright (c) 2022 
+\end{DoxyCopyright}
+
+
+\doxysubsection{Definições e macros}
+\mbox{\label{radar__rtos__v2_8ino_a064af7b2e733862c958d296e7f638c16}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!BUTTON@{BUTTON}}
+\index{BUTTON@{BUTTON}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{BUTTON}
+{\footnotesize\ttfamily \#define BUTTON~2}
+
+\mbox{\label{radar__rtos__v2_8ino_ae4e7ee8045dd9789b30829db6b9b1f6f}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!END\_ANGLE@{END\_ANGLE}}
+\index{END\_ANGLE@{END\_ANGLE}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{END\_ANGLE}
+{\footnotesize\ttfamily \#define END\+\_\+\+ANGLE~180}
+
+\mbox{\label{radar__rtos__v2_8ino_aa5bea3c74d457041f50bf7c9f59500c2}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!ENGINE\_PWM@{ENGINE\_PWM}}
+\index{ENGINE\_PWM@{ENGINE\_PWM}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{ENGINE\_PWM}
+{\footnotesize\ttfamily \#define ENGINE\+\_\+\+PWM~9}
+
+\mbox{\label{radar__rtos__v2_8ino_affbe97dd7cba62a79a0d6b5b80664469}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!INIT\_ANGLE@{INIT\_ANGLE}}
+\index{INIT\_ANGLE@{INIT\_ANGLE}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{INIT\_ANGLE}
+{\footnotesize\ttfamily \#define INIT\+\_\+\+ANGLE~0}
+
+\mbox{\label{radar__rtos__v2_8ino_af2e697ac60e05813d45ea2c9c9e79c25}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!LED\_ON@{LED\_ON}}
+\index{LED\_ON@{LED\_ON}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{LED\_ON}
+{\footnotesize\ttfamily \#define LED\+\_\+\+ON~12}
+
+\mbox{\label{radar__rtos__v2_8ino_a3b1ace5a18ef264ffb94cdae5a8e82df}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!LED\_RUNNING@{LED\_RUNNING}}
+\index{LED\_RUNNING@{LED\_RUNNING}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{LED\_RUNNING}
+{\footnotesize\ttfamily \#define LED\+\_\+\+RUNNING~11}
+
+\mbox{\label{radar__rtos__v2_8ino_a6c1ef69c04a4b72bd30e3761102ecea9}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!PIN\_POTEN@{PIN\_POTEN}}
+\index{PIN\_POTEN@{PIN\_POTEN}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{PIN\_POTEN}
+{\footnotesize\ttfamily \#define PIN\+\_\+\+POTEN~A0}
+
+\mbox{\label{radar__rtos__v2_8ino_a10ca9be41b091b163192c430671a7248}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!ULTR\_ECHO@{ULTR\_ECHO}}
+\index{ULTR\_ECHO@{ULTR\_ECHO}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{ULTR\_ECHO}
+{\footnotesize\ttfamily \#define ULTR\+\_\+\+ECHO~5}
+
+\mbox{\label{radar__rtos__v2_8ino_a2584c084a250794a8cb0e2c34f127967}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!ULTR\_TRIGGER@{ULTR\_TRIGGER}}
+\index{ULTR\_TRIGGER@{ULTR\_TRIGGER}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{ULTR\_TRIGGER}
+{\footnotesize\ttfamily \#define ULTR\+\_\+\+TRIGGER~4}
+
+
+
+\doxysubsection{Enumerações}
+\mbox{\label{radar__rtos__v2_8ino_a808e5cd4979462d3bbe3070d7d147444}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!States@{States}}
+\index{States@{States}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{States}
+{\footnotesize\ttfamily enum \textbf{ States}}
+
+\begin{DoxyEnumFields}{Enumeradores}
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STATE\_ZERO@{STATE\_ZERO}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!STATE\_ZERO@{STATE\_ZERO}}}\mbox{\label{radar__rtos__v2_8ino_a808e5cd4979462d3bbe3070d7d147444a0a7b6ed3dc3554a6b459f20fa24f834e}} 
+STATE\+\_\+\+ZERO&\\
+\hline
+
+\raisebox{\heightof{T}}[0pt][0pt]{\index{STATE\_ONE@{STATE\_ONE}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!STATE\_ONE@{STATE\_ONE}}}\mbox{\label{radar__rtos__v2_8ino_a808e5cd4979462d3bbe3070d7d147444a19f1c5e179421b5424826610baa2faea}} 
+STATE\+\_\+\+ONE&\\
+\hline
+
+\end{DoxyEnumFields}
+
+
+\doxysubsection{Funções}
+\mbox{\label{radar__rtos__v2_8ino_ad95ee40c746aeced0d27b0b67c1cb1f7}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!buttonTask@{buttonTask}}
+\index{buttonTask@{buttonTask}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{buttonTask()}
+{\footnotesize\ttfamily void button\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+
+
+Faz a leitura e controle do sistema atraves do botão. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em arg} & \\
+\hline
+\end{DoxyParams}
+Le estado atual do botao
+
+variavel que guarda o estado anterior do botao
+
+Led indicando que o sistema esta pronto para iniciar
+
+guarda o estado anterior do botao, le o estado atual, se atinge os criterios para ligar o radar, ele da o semaforo ao servo motor e inicia a leitura das distancias\mbox{\label{radar__rtos__v2_8ino_a705a4ca2d322ceaf187d71e27b4c50e6}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!logTask@{logTask}}
+\index{logTask@{logTask}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{logTask()}
+{\footnotesize\ttfamily void log\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+
+
+Faz o print dos dados de indice da captura e das distancias maximas e minimas para a porta serial. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em arg} & \\
+\hline
+\end{DoxyParams}
+verifica se semaforo esta disponivel para si e printa as informacoes na porta serial, apos, reescreve os dados de distancia maxima e minima para a proxima execucao\mbox{\label{radar__rtos__v2_8ino_afe461d27b9c48d5921c00d521181f12f}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!loop@{loop}}
+\index{loop@{loop}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{loop()}
+{\footnotesize\ttfamily void loop (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+funcao de loop do arduino 
+
+Nada é feito aqui, Todas as funções são feitas em Tasks e não no loop do arduino\mbox{\label{radar__rtos__v2_8ino_a6da916ef3a8247d416b52001d76c641e}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!readSensorTask@{readSensorTask}}
+\index{readSensorTask@{readSensorTask}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{readSensorTask()}
+{\footnotesize\ttfamily void read\+Sensor\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+
+
+Leitura sensor Ultrassonico. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em arg} & \\
+\hline
+\end{DoxyParams}
+Instancia variavel para medir a distancia
+
+testa se o estado = 1 e se for, faz a leitura do sensor e compara as distancias maximas e minimas, caso nao seja estado um, espera e verifica novamente
+
+Le o dado do sensor
+
+Deleta a Task atual\mbox{\label{radar__rtos__v2_8ino_a275f98ed177d02da1515ff6eeba64f2c}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!servoTask@{servoTask}}
+\index{servoTask@{servoTask}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{servoTask()}
+{\footnotesize\ttfamily void servo\+Task (\begin{DoxyParamCaption}\item[{void $\ast$}]{arg }\end{DoxyParamCaption})}
+
+
+
+Controle do motor servo motor. 
+
+
+\begin{DoxyParams}{Parâmetros}
+{\em arg} & \\
+\hline
+\end{DoxyParams}
+instancia a variavel de objeto do servo motor
+
+anexa o pino designado ao servo motor
+
+define a variavel para a companhar a posicao do motor
+
+redefine o valor de posicao para a inicial
+
+verifica se semaforo esta disponivel, se sim começa a rotacao do motor ate 180 graus e volta novamente\mbox{\label{radar__rtos__v2_8ino_a4fc01d736fe50cf5b977f755b675f11d}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!setup@{setup}}
+\index{setup@{setup}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{setup()}
+{\footnotesize\ttfamily void setup (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})}
+
+
+
+Instancia o sensor como um objeto linkando as portas designadas a ele. 
+
+funcao de setup do sistema, define variaveis e tarefas Inicializa Serial
+
+Setup inputs e outputs
+
+Garante que os leds estarão desligados
+
+Espera até a porta serial conectar
+
+Cria o semaforo para o servo motor
+
+Printa mensagem de erro ao criar semaforo do servo motor
+
+Cria o semaforo para o servo motor
+
+Printa mensagem de erro ao criar semaforo do log
+
+Cria tarefa read\+Sensor\+Task
+
+Cria tarefa led\+Task
+
+Cria tarefa button\+Task
+
+Cria tarefa log\+Task\mbox{\label{radar__rtos__v2_8ino_ac9783626cbcedd31bcf90a1d5f4754e5}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!ultrasonic@{ultrasonic}}
+\index{ultrasonic@{ultrasonic}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{ultrasonic()}
+{\footnotesize\ttfamily Ultrasonic ultrasonic (\begin{DoxyParamCaption}\item[{\textbf{ ULTR\+\_\+\+TRIGGER}}]{,  }\item[{\textbf{ ULTR\+\_\+\+ECHO}}]{ }\end{DoxyParamCaption})}
+
+
+
+Cria handler para o semaforo do log. 
+
+Declaração sensor Ultrasônico 
+
+\doxysubsection{Variáveis}
+\mbox{\label{radar__rtos__v2_8ino_a2068cb430e02b3c11f6d8c476cbc8dd4}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!buttonTaskH@{buttonTaskH}}
+\index{buttonTaskH@{buttonTaskH}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{buttonTaskH}
+{\footnotesize\ttfamily Task\+Handle\+\_\+t button\+TaskH}
+
+
+
+Cria handler para a tarefa de controlar o motor. 
+
+\mbox{\label{radar__rtos__v2_8ino_a947a37094218749b933ac1992bd9e7c7}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!logTaskH@{logTaskH}}
+\index{logTaskH@{logTaskH}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{logTaskH}
+{\footnotesize\ttfamily Task\+Handle\+\_\+t log\+TaskH}
+
+
+
+Cria handler para a tarefa de ler o botao. 
+
+\mbox{\label{radar__rtos__v2_8ino_a1b90e5a2a190b37adc24e1c4d3735dfd}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!max\_dist@{max\_dist}}
+\index{max\_dist@{max\_dist}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{max\_dist}
+{\footnotesize\ttfamily volatile int max\+\_\+dist = 0}
+
+
+
+Variavel que indica se esta rodando a leitura das distancias. 
+
+\mbox{\label{radar__rtos__v2_8ino_ae88915a7b21585e1f5cb9a81ba10a421}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!min\_dist@{min\_dist}}
+\index{min\_dist@{min\_dist}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{min\_dist}
+{\footnotesize\ttfamily volatile int min\+\_\+dist = 999}
+
+
+
+Instancia variavel para distancia maxima com valor baixo. 
+
+\mbox{\label{radar__rtos__v2_8ino_abc7cde78dc2d9c4043f1113b94046911}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!readSensorTaskH@{readSensorTaskH}}
+\index{readSensorTaskH@{readSensorTaskH}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{readSensorTaskH}
+{\footnotesize\ttfamily Task\+Handle\+\_\+t read\+Sensor\+TaskH}
+
+
+
+INstancia variavel para distancia minima com valor alto. 
+
+Tarefas \mbox{\label{radar__rtos__v2_8ino_a7c10027ca174fc9d529796f04aca6bd4}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!running@{running}}
+\index{running@{running}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{running}
+{\footnotesize\ttfamily volatile bool running = false}
+
+
+
+Inicia variavel de estado no estado zero. 
+
+\mbox{\label{radar__rtos__v2_8ino_af05cf61d6867d32027e304157a352337}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!semLog@{semLog}}
+\index{semLog@{semLog}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{semLog}
+{\footnotesize\ttfamily Semaphore\+Handle\+\_\+t sem\+Log}
+
+
+
+Cria handler para o semaforo do motor. 
+
+\mbox{\label{radar__rtos__v2_8ino_a8a2fd09cc4ccea76939f98e38bfc4de7}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!semServo@{semServo}}
+\index{semServo@{semServo}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{semServo}
+{\footnotesize\ttfamily Semaphore\+Handle\+\_\+t sem\+Servo}
+
+
+
+Cria handler para a tarefa de criar o log das distancias. 
+
+Semaforos \mbox{\label{radar__rtos__v2_8ino_a7db70f05fdf806c1a0263090d14bcabd}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!servoTaskH@{servoTaskH}}
+\index{servoTaskH@{servoTaskH}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{servoTaskH}
+{\footnotesize\ttfamily Task\+Handle\+\_\+t servo\+TaskH}
+
+
+
+Cria handler para a tarefa de ler o sensor. 
+
+\mbox{\label{radar__rtos__v2_8ino_a876fafd66726d49b93b389af89ff69a6}} 
+\index{radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}!state@{state}}
+\index{state@{state}!radar\_rtos\_v2.ino@{radar\_rtos\_v2.ino}}
+\doxysubsubsection{state}
+{\footnotesize\ttfamily enum \textbf{ States} state = \textbf{ STATE\+\_\+\+ZERO}}
+
+
+
+Estados possiveis, zero = nao operante ; um = operando. 
+
