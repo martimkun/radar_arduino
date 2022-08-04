@@ -8,7 +8,7 @@ def main():
         index = 0
         while(True):
             print("Tentando uart...")
-            ser = serial.Serial('/dev/ttyACM2',9600)
+            ser = serial.Serial('/dev/ttyACM0',9600)
             data = ser.read_until(size=64)
 
             if os.path.exists(filepath+"/log.txt"):

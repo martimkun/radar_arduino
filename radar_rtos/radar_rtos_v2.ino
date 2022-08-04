@@ -1,3 +1,14 @@
+/**
+ * @file radar_rtos_v2.ino
+ * @author martim, michael (https://github.com/martimkun/radar_arduino)
+ * @brief radar com sensor de distancia ultrassonico usando arduino
+ * @version 0.1
+ * @date 2022-08-04
+ * 
+ * @copyright Copyright (c) 2022
+ * 
+ */
+
 #include "Arduino_FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
@@ -17,101 +28,116 @@
 #define LED_RUNNING 11
 
 enum States { STATE_ZERO = 0,
-              STATE_ONE };
-enum States state = STATE_ZERO;
-volatile bool running = false;
-volatile int max_dist = 0;
-volatile int min_dist = 999;
+              STATE_ONE };      /// Estados possiveis, zero = nao operante ; um = operando
+enum States state = STATE_ZERO; /// Inicia variavel de estado no estado zero
+volatile bool running = false;  /// Variavel que indica se esta rodando a leitura das distancias
+volatile int max_dist = 0;      /// Instancia variavel para distancia maxima com valor baixo
+volatile int min_dist = 999;    /// INstancia variavel para distancia minima com valor alto
 
-//Tasks
-TaskHandle_t readSensorTaskH;
-TaskHandle_t servoTaskH;
-TaskHandle_t buttonTaskH;
-TaskHandle_t logTaskH;
+/// Tarefas
+TaskHandle_t readSensorTaskH;   /// Cria handler para a tarefa de ler o sensor
+TaskHandle_t servoTaskH;        /// Cria handler para a tarefa de controlar o motor
+TaskHandle_t buttonTaskH;       /// Cria handler para a tarefa de ler o botao
+TaskHandle_t logTaskH;          /// Cria handler para a tarefa de criar o log das distancias
 
-// System apis
-SemaphoreHandle_t semServo;
-SemaphoreHandle_t semLog;
+/// Semaforos
+SemaphoreHandle_t semServo;     /// Cria handler para o semaforo do motor
+SemaphoreHandle_t semLog;       /// Cria handler para o semaforo do log
 
-// Declaração sensor Ultrasônico
-Ultrasonic ultrasonic(ULTR_TRIGGER, ULTR_ECHO);
+/// Declaração sensor Ultrasônico
+Ultrasonic ultrasonic(ULTR_TRIGGER, ULTR_ECHO);   /// Instancia o sensor como um objeto linkando as portas designadas a ele
 
+/**
+ * @brief funcao de setup do sistema, define variaveis e tarefas
+ * 
+ */
 void setup() {
-  // Inicializa Serial
-  Serial.begin(9600);
+  
+  Serial.begin(9600); /// Inicializa Serial
 
-  // Setup inputs e outputs
+  /// Setup inputs e outputs
   pinMode(BUTTON, INPUT);
   pinMode(LED_ON, OUTPUT);
   pinMode(LED_RUNNING, OUTPUT);
 
-  // Garantindo que os leds estarão desligados
+  /// Garante que os leds estarão desligados
   digitalWrite(LED_ON, LOW);
   digitalWrite(LED_RUNNING, LOW);
 
   while (!Serial) {
-    ;  // wait for serial port to connect.
+    ;  /// Espera até a porta serial conectar
   }
 
-  semServo = xSemaphoreCreateBinary();
+  semServo = xSemaphoreCreateBinary();    /// Cria o semaforo para o servo motor
 
   if (semServo == NULL) {
-    Serial.println("Erro ao criar o semaforo do Servomotor");
+    Serial.println("Erro ao criar o semaforo do Servo motor"); /// Printa mensagem de erro ao criar semaforo do servo motor
   }
 
-  semLog = xSemaphoreCreateBinary();
+  semLog = xSemaphoreCreateBinary();      /// Cria o semaforo para o servo motor
 
   if (semLog == NULL) {
-    Serial.println("Erro ao criar o semaforo de Log");
+    Serial.println("Erro ao criar o semaforo de Log"); /// Printa mensagem de erro ao criar semaforo do log
   }
 
-  //Cria tarefa readSensorTask
-  xTaskCreate(readSensorTask,    //Funcao
-              "readSensorTask",  //Nome
-              128,               //Pilha
-              NULL,              //Parametro
-              1,                 //Prioridade
+  ///Cria tarefa readSensorTask
+  xTaskCreate(readSensorTask,    
+              "readSensorTask",  
+              128,               
+              NULL,              
+              1,                 
               &readSensorTaskH);
 
-  //Cria tarefa ledTask
-  xTaskCreate(servoTask,    //Funcao
-              "servoTask",  //Nome
-              128,          //Pilha
-              NULL,         //Parametro
-              1,            //Prioridade
+  ///Cria tarefa ledTask
+  xTaskCreate(servoTask,    
+              "servoTask",  
+              128,          
+              NULL,         
+              1,            
               &servoTaskH);
 
-  //Cria tarefa buttonTask
-  xTaskCreate(buttonTask,    //Funcao
-              "buttonTask",  //Nome
-              128,           //Pilha
-              NULL,          //Parametro
-              2,             //Prioridade
+  ///Cria tarefa buttonTask
+  xTaskCreate(buttonTask,    
+              "buttonTask",  
+              128,           
+              NULL,          
+              2,             
               &buttonTaskH);
 
-  //Cria tarefa logTask
-  xTaskCreate(logTask,    //Funcao
-              "logTask",  //Nome
-              128,           //Pilha
-              NULL,          //Parametro
-              2,             //Prioridade
+  ///Cria tarefa logTask
+  xTaskCreate(logTask,   
+              "logTask",  
+              128,           
+              NULL,          
+              2,             
               &logTaskH);
 }
 
+/**
+ * @brief funcao de loop do arduino
+ * 
+ */
 void loop() {
-  // Nada é feito aqui, Todas as funções são feitas em Tasks
+  /// Nada é feito aqui, Todas as funções são feitas em Tasks e não no loop do arduino
 }
 
-/* readSensorTask
- *  Leitura sensor Ultrassonico
+
+/**
+ * @brief Leitura sensor Ultrassonico
+ * 
+ * @param arg 
  */
 void readSensorTask(void *arg) {
 
-  static int distance;
+  static int distance;      /// Instancia variavel para medir a distancia
 
+  /**
+   * @brief testa se o estado = 1 e se for, faz a leitura do sensor e compara as distancias maximas e minimas, caso nao seja estado um, espera e verifica novamente
+   * 
+   */
   while (1) {
     if (state == STATE_ONE) {
-      distance = ultrasonic.read();
+      distance = ultrasonic.read();     /// Le o dado do sensor
       if(distance > max_dist){
         max_dist = distance;
       }
@@ -128,21 +154,28 @@ void readSensorTask(void *arg) {
   }
 
   //O codigo nunca deve chegar aqui
-  vTaskDelete(NULL);  //Deleta a Task atual
+  vTaskDelete(NULL);  /// Deleta a Task atual
 }
 
-/* servoTask
- *  Controle motor servo
+
+/**
+ * @brief Controle do motor servo motor
+ * 
+ * @param arg 
  */
 void servoTask(void *arg) {
 
-  Servo servo;
-  servo.attach(ENGINE_PWM);
-  static int position;
-  servo.write(0);
+  Servo servo;                    /// instancia a variavel de objeto do servo motor
+  servo.attach(ENGINE_PWM);       /// anexa o pino designado ao servo motor
+  static int position;            /// define a variavel para a companhar a posicao do motor
+  servo.write(0);                 /// redefine o valor de posicao para a inicial
   static int speed = 1;
-  static int count = 2;
+  static int count = 1;
 
+  /**
+   * @brief verifica se semaforo esta disponivel, se sim começa a rotacao do motor ate 180 graus e volta novamente
+   * 
+   */
   while (1) {
 
     //if (state == STATE_ONE && count != 0) {
@@ -175,12 +208,6 @@ void servoTask(void *arg) {
       vTaskDelay(300);
       xSemaphoreGive(semLog);
     }
-     /* else {
-      state = STATE_ZERO;
-      running = false;
-      count = 2;
-      vTaskDelay(300);
-    } */
   }
 
   //O codigo nunca deve chegar aqui
@@ -188,15 +215,25 @@ void servoTask(void *arg) {
 }
 
 /* buttonTask
- *  Controle do sistema através do botão
+ *  
+ */
+
+/**
+ * @brief Faz a leitura e controle do sistema atraves do botão
+ * 
+ * @param arg 
  */
 void buttonTask(void *arg) {
-  static bool button = digitalRead(BUTTON);
-  static bool lastButton;
+  static bool button = digitalRead(BUTTON); /// Le estado atual do botao
+  static bool lastButton;                   /// variavel que guarda o estado anterior do botao
 
-  // Sistema pronto para iniciar
-  digitalWrite(LED_ON, HIGH);
+  digitalWrite(LED_ON, HIGH);   /// Led indicando que o sistema esta pronto para iniciar
 
+  /**
+   * @brief guarda o estado anterior do botao, le o estado atual, se atinge os criterios para ligar o radar,
+   * ele da o semaforo ao servo motor e inicia a leitura das distancias
+   * 
+   */
   while (1) {
     lastButton = button;
     button = digitalRead(BUTTON);
@@ -241,15 +278,27 @@ void buttonTask(void *arg) {
   vTaskDelete(NULL);  //Deleta a Task atual
 }
 
+
+/**
+ * @brief Faz o print dos dados de indice da captura e das distancias maximas e minimas para a porta serial
+ * 
+ * @param arg 
+ */
 void logTask(void *arg){
 
-    while (1) {
-        if(xSemaphoreTake(semLog, portMAX_DELAY)){       // checa se semáforo está disponível
-            Serial.println("max"+String(max_dist)+";min"+String(min_dist));
-            max_dist = 0;
-            min_dist = 999;
-        }
-        vTaskDelay(300);
-    }
-    vTaskDelete(NULL);
+  /**
+   * @brief verifica se semaforo esta disponivel para si e printa as informacoes na porta serial, apos,
+   * reescreve os dados de distancia maxima e minima para a proxima execucao
+   * 
+   */
+  while (1) {
+      if(xSemaphoreTake(semLog, portMAX_DELAY)){       
+          Serial.println("max"+String(max_dist)+";min"+String(min_dist));
+          max_dist = 0;
+          min_dist = 999;
+      }
+      vTaskDelay(300);
+  }
+    
+  vTaskDelete(NULL);
 }
